@@ -1,0 +1,22 @@
+//@version=5
+strategy("EMA Crossover Strategy", overlay=true)
+
+// EMA 参数
+emaLength = input(120, title="EMA Length")
+
+// 计算 EMA
+emaLine = ta.ema(close, emaLength)
+
+// 定义买入和卖出条件
+longCondition = ta.crossover(close, emaLine)
+shortCondition = ta.crossunder(close, emaLine)
+
+// 执行策略
+if (longCondition)
+    strategy.entry("Long", strategy.long)
+
+if (shortCondition)
+    strategy.close("Long")
+
+// 绘制 EMA 线
+plot(emaLine, title="EMA Line", color=color.blue)
